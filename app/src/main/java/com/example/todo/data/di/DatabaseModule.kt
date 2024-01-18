@@ -1,0 +1,32 @@
+package com.example.todo.data.di
+
+import androidx.room.Room
+import androidx.room.processor.Context
+import com.example.todo.data.ToDoDatabase
+import com.example.todo.util.Constants.DATABASE_NAME
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+object DatabaseModule {
+
+    @Singleton
+    @Provides
+    fun provideDatabase(
+        @ApplicationContext context: android.content.Context
+    ) = Room.databaseBuilder(
+        context,
+        ToDoDatabase::class.java,
+        DATABASE_NAME
+    ).build()
+
+    @Singleton
+    @Provides
+    fun provideDao(database: ToDoDatabase) = database.toDoDao()
+
+}
